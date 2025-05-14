@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Запись чисел в файл</title>
+  <style>
+    #buttons-container {
+      display: inline-block;
+      width: 200px;
+      vertical-align: top;
+    }
+
+    #mes {
+      display: inline-block;
+      white-space: pre-wrap;
+      width: 400px;
+      vertical-align: top;
+    }
+    #orderForm {
+      display: inline-block;
+      white-space: pre-wrap;
+      width: 400px;
+      vertical-align: top;
+    }
+    .hide {
+      display: none;
+    }
+    #show {
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div id="buttons-container">
+      <button id="writeFile1Button" class="hide">Сохранить</button></br>
+      <button id="writeFile2Button" class="hide">Прочитать</button></br>
+      <button id="writeFile3Button">Пропуск времени</button></br>
+      <button id="writeFile5Button">Добавить склад</button></br>
+      <button id="writeFile6Button">Удалить склад</button></br>
+      <button id="writeFile8Button">Добавить курьера</button></br>
+      <button id="writeFile9Button">Удалить курьера</button></br>
+      <button id="writeFile11Button">Добавить заказы</button></br>
+      <button id="readFileButton" class="hide">Прочитать файл</button></br>
+      <button id="readFile1Button" class="hide">Прочитать файл</button></br>
+      <button id="readFile2Button" class="hide">Прочитать файл</button></br>
+  </div>
+  <span id="mes"> 
+    <div id="message"></div>
+  </span>
+  <div id="orderForm"></div>
+
+  <script>
+    const writeFile1Button = document.getElementById("writeFile1Button");
+    const writeFile2Button = document.getElementById("writeFile2Button");
+    const writeFile3Button = document.getElementById("writeFile3Button");
+    const writeFile5Button = document.getElementById("writeFile5Button");
+    const writeFile6Button = document.getElementById("writeFile6Button");
+    const writeFile8Button = document.getElementById("writeFile8Button");
+    const writeFile9Button = document.getElementById("writeFile9Button");
+    const writeFile11Button = document.getElementById("writeFile11Button");
+    const readFilesButton = document.getElementById("readFileButton");
+    const readFiles1Button = document.getElementById("readFile1Button");
+    const readFiles2Button = document.getElementById("readFile2Button");
+    const messageDiv = document.getElementById("message")
+    const message2Div = document.getElementById("message2");
+    const message3Div = document.getElementById("message3");
+
+    const writeFilename = "text.txt";
+    const writeFilename2 = "text2.txt";
+    const readFilenames = ["courier.txt", "order.txt", "storage.txt"];
+
+    writeFile1Button.addEventListener("click", () => {
+      writeFile("1");
+    });
+
+    readFiles1Button.addEventListener("click", () => {
+      writeFile("1");
+    });
+
+    readFiles2Button.addEventListener("click", () => {
+      writeFile("2");
+    });
+
+    writeFile2Button.addEventListener("click", () => {
+      location.reload(true);
+      writeFile("2");
+    });
+
+    writeFile3Button.addEventListener("click", () => {
+      const formContainer = document.getElementById("orderForm");
+      const form = document.createElement("form");
+
+      const FLabel = document.createElement("label");
+      FLabel.textContent = "Количесто часов:";
+      FLabel.setAttribute("for", "h");
+
+      const HInput = document.createElement("input");
+      HInput.setAttribute("type", "text");
+      HInput.setAttribute("id", "hours");
+      HInput.setAttribute("name", "hours");
+      HInput.setAttribute("required", true);
+      HInput.setAttribute("pattern", "[0-9]+");
+
+      const submitButton = document.createElement("button");
+      submitButton.setAttribute("type", "submit");
+      submitButton.textContent = "Подтвердить";
+
+      form.appendChild(FLabel);
+      form.appendChild(HInput);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(submitButton);
+
+      formContainer.appendChild(form);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        form.remove();
+        const hours = HInput.value;
+        formContainer.innerHTML="";
+        writeFile("3");
+        console.log(hours);
+        writeFile2(hours);
+        location.reload(true);
+      });
+    });
+
+    writeFile5Button.addEventListener("click", () => {
+      const formContainer = document.getElementById("orderForm");
+      const form = document.createElement("form");
+
+      const FLabel = document.createElement("label");
+      FLabel.textContent = "ID склада:";
+      FLabel.setAttribute("for", "id");
+
+      const HInput = document.createElement("input");
+      HInput.setAttribute("type", "text");
+      HInput.setAttribute("id", "id");
+      HInput.setAttribute("name", "sk");
+      HInput.setAttribute("required", true);
+      HInput.setAttribute("pattern", "[0-9]+");
+
+      const FLabel2 = document.createElement("label");
+      FLabel2.textContent = "X координата:";
+      FLabel2.setAttribute("for", "x");
+
+      const HInput2 = document.createElement("input");
+      HInput2.setAttribute("type", "text");
+      HInput2.setAttribute("id", "x");
+      HInput2.setAttribute("name", "xc");
+      HInput2.setAttribute("required", true);
+      HInput2.setAttribute("pattern", "[0-9]+");
+
+      const FLabel3 = document.createElement("label");
+      FLabel3.textContent = "Y координата:";
+      FLabel3.setAttribute("for", "y");
+
+      const HInput3 = document.createElement("input");
+      HInput3.setAttribute("type", "text");
+      HInput3.setAttribute("id", "y");
+      HInput3.setAttribute("name", "yc");
+      HInput3.setAttribute("required", true);
+      HInput3.setAttribute("pattern", "[0-9]+");
+
+      const submitButton = document.createElement("button");
+      submitButton.setAttribute("type", "submit");
+      submitButton.textContent = "Подтвердить";
+
+      form.appendChild(FLabel);
+      form.appendChild(HInput);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(FLabel2);
+      form.appendChild(HInput2);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(FLabel3);
+      form.appendChild(HInput3);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(submitButton);
+
+      formContainer.appendChild(form);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        form.remove();
+        const id = HInput.value;
+        const x = HInput2.value;
+        const y = HInput3.value;
+        formContainer.innerHTML="";
+        console.log("5");
+        writeFile("5");
+        console.log(id);
+        setTimeout(function() { writeFile2(id); } , 300);
+        console.log(x);
+        setTimeout(function() { writeFile2(x); } , 500);
+        console.log(y);
+        setTimeout(function() { writeFile2(y); } , 700);
+        setTimeout(function() { readFiles1Button.click(); }, 900);
+        setTimeout(function() { location.reload(); } , 1000);
+      });
+    });
+    writeFile6Button.addEventListener("click", () => {
+      const formContainer = document.getElementById("orderForm");
+      const form = document.createElement("form");
+
+      const FLabel = document.createElement("label");
+      FLabel.textContent = "ID склада:";
+      FLabel.setAttribute("for", "idd");
+
+      const HInput = document.createElement("input");
+      HInput.setAttribute("type", "text");
+      HInput.setAttribute("id", "iddd");
+      HInput.setAttribute("name", "idds");
+      HInput.setAttribute("required", true);
+      HInput.setAttribute("pattern", "[0-9]+");
+
+      const submitButton = document.createElement("button");
+      submitButton.setAttribute("type", "submit");
+      submitButton.textContent = "Подтвердить";
+
+      form.appendChild(FLabel);
+      form.appendChild(HInput);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(submitButton);
+
+      formContainer.appendChild(form);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        form.remove();
+        const id = HInput.value;
+        formContainer.innerHTML="";
+        setTimeout(function() {  writeFile("6") } , 100);
+        console.log(id);
+        setTimeout(function() {  writeFile2(id); } , 200);
+        setTimeout(function() {   readFiles1Button.click(); } , 300);
+        setTimeout(function() { location.reload(true) } , 400);
+      });
+    });
+
+    writeFile8Button.addEventListener("click", () => {
+      const formContainer = document.getElementById("orderForm");
+      const form = document.createElement("form");
+
+      const FLabel = document.createElement("label");
+      FLabel.textContent = "ID курьера:";
+      FLabel.setAttribute("for", "id");
+
+      const HInput = document.createElement("input");
+      HInput.setAttribute("type", "text");
+      HInput.setAttribute("id", "id");
+      HInput.setAttribute("name", "sk");
+      HInput.setAttribute("required", true);
+      HInput.setAttribute("pattern", "[0-9]+");
+
+      const FLabel4 = document.createElement("label");
+      FLabel4.textContent = "Скорость в км/ч:";
+      FLabel4.setAttribute("for", "km");
+
+      const HInput4 = document.createElement("input");
+      HInput4.setAttribute("type", "text");
+      HInput4.setAttribute("id", "kmm");
+      HInput4.setAttribute("name", "kmmm");
+      HInput4.setAttribute("required", true);
+      HInput4.setAttribute("pattern", "[0-9]+");
+
+      const FLabel5 = document.createElement("label");
+      FLabel5.textContent = "ID склада:";
+      FLabel5.setAttribute("for", "id");
+
+      const HInput5 = document.createElement("input");
+      HInput5.setAttribute("type", "text");
+      HInput5.setAttribute("id", "id");
+      HInput5.setAttribute("name", "sk");
+      HInput5.setAttribute("required", true);
+      HInput5.setAttribute("pattern", "[0-9]+");
+
+      const FLabel2 = document.createElement("label");
+      FLabel2.textContent = "X координата:";
+      FLabel2.setAttribute("for", "x");
+
+      const HInput2 = document.createElement("input");
+      HInput2.setAttribute("type", "text");
+      HInput2.setAttribute("id", "x");
+      HInput2.setAttribute("name", "xc");
+      HInput2.setAttribute("required", true);
+      HInput2.setAttribute("pattern", "[0-9]+");
+
+      const FLabel3 = document.createElement("label");
+      FLabel3.textContent = "Y координата:";
+      FLabel3.setAttribute("for", "y");
+
+      const HInput3 = document.createElement("input");
+      HInput3.setAttribute("type", "text");
+      HInput3.setAttribute("id", "y");
+      HInput3.setAttribute("name", "yc");
+      HInput3.setAttribute("required", true);
+      HInput3.setAttribute("pattern", "[0-9]+");
+
+      const submitButton = document.createElement("button");
+      submitButton.setAttribute("type", "submit");
+      submitButton.textContent = "Подтвердить";
+
+      form.appendChild(FLabel);
+      form.appendChild(HInput);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(FLabel4);
+      form.appendChild(HInput4);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(FLabel5);
+      form.appendChild(HInput5);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(FLabel2);
+      form.appendChild(HInput2);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(FLabel3);
+      form.appendChild(HInput3);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(submitButton);
+
+      formContainer.appendChild(form);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        form.remove();
+        const id = HInput.value;
+        const x = HInput2.value;
+        const y = HInput3.value;
+        const km = HInput4.value;
+        const idd = HInput5.value;
+        formContainer.innerHTML="";
+        console.log("8");
+        writeFile("8");
+        console.log(id);
+        setTimeout(function() { writeFile2(id); } , 300);
+        console.log(km);
+        setTimeout(function() { writeFile2(km); } , 400);
+        console.log(idd);
+        setTimeout(function() { writeFile2(idd); } , 500);
+        console.log(x);
+        setTimeout(function() { writeFile2(x); } , 600);
+        console.log(y);
+        setTimeout(function() { writeFile2(y); } , 700);
+        setTimeout(function() { readFiles1Button.click(); }, 900);
+        setTimeout(function() { location.reload(); } , 1000);
+      });
+    });
+
+    writeFile9Button.addEventListener("click", () => {
+      writeFile("9");
+    });
+
+    writeFile11Button.addEventListener("click", () => {
+      writeFile("11");
+    });
+
+    readFilesButton.addEventListener("click", async () => {
+      let allData = "";
+
+      for (const filename of readFilenames) {
+        try {
+          const response = await fetch(`/load?filename=${filename}`);
+          if (response.ok) {
+            const data = await response.text();
+            if(filename == "courier.txt"){
+              allData += `Содержимое1 файла ${filename}:\n${data}\n\n`;
+            }
+            else if(filename == "order.txt"){
+              allData += `Содержимое2 файла ${filename}:\n${data}\n\n`;
+            }
+            else if(filename == "storage.txt"){
+              allData += `Содержимое3 файла ${filename}:\n${data}\n\n`;
+            }
+          } else {
+            allData += `Ошибка при чтении файла ${filename}: ${response.statusText}\n\n`;
+          }
+        } catch (error) {
+          allData += `Ошибка при чтении файла ${filename}: ${error}\n\n`;
+        }
+      }
+
+      messageDiv.textContent = allData;
+    });
+
+    async function writeFile(data) {
+      try {
+        const response = await fetch(`/save/${writeFilename}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          body: data
+        });
+
+        const responseText = await response.text();
+        messageDiv.textContent = responseText;
+      } catch (error) {
+        console.error("Ошибка:", error);
+        messageDiv.textContent = "Ошибка: " + error;
+      }
+    }
+
+    async function writeFile2(data) {
+      try {
+        const response2 = await fetch(`/save2/${writeFilename2}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          body: data
+        });
+
+        const responseText2 = await response2.text();
+        messageDiv.textContent = responseText2;
+      } catch (error) {
+        console.error("Ошибка:", error);
+        messageDiv.textContent = "Ошибка: " + error;
+      }
+    }
+
+    window.onload = function() {
+      const myButton = document.getElementById("readFileButton");
+      myButton.click(); 
+      readFiles2Button.click();
+    };
+    
+  </script>
+
+</body>
+</html>
