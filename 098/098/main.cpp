@@ -173,7 +173,20 @@ int main() {
 		case 9: {
 			std::cout << "removing courier id=";
 			int id;
-			std::cin >> id;
+			do {
+				stop2 = 0;
+				std::ifstream in("../Пр/123/data/text2.txt");
+				if (in.is_open())
+				{
+					if (std::getline(in, line)) {
+						id = stoi(line);
+						in.close();
+						stop2 = 1;
+					}
+				}
+				in.close();
+			} while (stop2 == 0);
+			std::cout << id << std::endl;
 			database.remove_courier(couriers, id);
 			break;
 		}

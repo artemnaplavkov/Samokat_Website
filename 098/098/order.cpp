@@ -9,13 +9,6 @@ using namespace std;
 namespace abstracts {
 	void Order::print() {
 		string line;
-		line = "id=" + to_string(id) + "; storage_id=" + to_string(storage_id) + "; state=" + to_string(state) + "; ";
-		std::ofstream out("C:/Users/User/Desktop/Пр/123/data/text2.txt", std::ios::app);
-		if (out.is_open())
-		{
-			out << line << std::endl;
-		}
-		out.close();
 		std::cout
 			<< "id=" << id
 			<< "; storage_id=" << storage_id
@@ -24,9 +17,39 @@ namespace abstracts {
 	}
 	void Order::input() {
 		std::cout << "id=";
-		std::cin >> id;
+		int stop2;
+		string line;
+		do {
+			stop2 = 0;
+			std::ifstream in("../Пр/123/data/text2.txt");
+			if (in.is_open())
+			{
+				if (std::getline(in, line)) {
+					std::string s2 = line.substr(0, line.find('/'));
+					id = stoi(s2);
+					in.close();
+					stop2 = 1;
+				}
+			}
+			in.close();
+		} while (stop2 == 0);
+		cout << id << endl;
 		std::cout << "storage_id=";
-		std::cin >> storage_id;
+		do {
+			stop2 = 0;
+			std::ifstream in("../Пр/123/data/text2.txt");
+			if (in.is_open())
+			{
+				if (std::getline(in, line)) {
+					std::string s2 = line.substr(line.find('/') + 1, line.find(' '));
+					storage_id = stoi(s2);
+					in.close();
+					stop2 = 1;
+				}
+			}
+			in.close();
+		} while (stop2 == 0);
+		std::cout << storage_id << std::endl;
 		state = not_processed;
 		target.input();
 

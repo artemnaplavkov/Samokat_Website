@@ -15,11 +15,10 @@ namespace abstracts {
 			if (in.is_open())
 			{
 				if (std::getline(in, line)) {
-					x = stoi(line);
+					std::string s2 = line.substr(line.find(' ')+1, line.find('@'));
+					x = stoi(s2);
 					in.close();
 					std::ofstream ofs;
-					ofs.open("../Пр/123/data/text2.txt", std::ofstream::out | std::ofstream::trunc);
-					ofs.close();
 					stop2 = 1;
 				}
 			}
@@ -33,11 +32,10 @@ namespace abstracts {
 			if (in.is_open())
 			{
 				if (std::getline(in, line)) {
-					y = stoi(line);
+					std::string s2 = line.substr(line.find('@')+1, line.find('|'));
+					y = stoi(s2);
 					in.close();
 					std::ofstream ofs;
-					ofs.open("../Пр/123/data/text2.txt", std::ofstream::out | std::ofstream::trunc);
-					ofs.close();
 					stop2 = 1;
 				}
 			}
