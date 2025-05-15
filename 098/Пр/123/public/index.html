@@ -38,7 +38,7 @@
       <button id="writeFile6Button">Удалить склад</button></br>
       <button id="writeFile8Button">Добавить курьера</button></br>
       <button id="writeFile9Button">Удалить курьера</button></br>
-      <button id="writeFile11Button">Добавить заказы</button></br>
+      <button id="writeFile11Button">Добавить заказ</button></br>
       <button id="readFileButton" class="hide">Прочитать файл</button></br>
       <button id="readFile1Button" class="hide">Прочитать файл</button></br>
       <button id="readFile2Button" class="hide">Прочитать файл</button></br>
@@ -81,7 +81,6 @@
     });
 
     writeFile2Button.addEventListener("click", () => {
-      location.reload(true);
       writeFile("2");
     });
 
@@ -119,7 +118,8 @@
         writeFile("3");
         console.log(hours);
         writeFile2(hours);
-        location.reload(true);
+        setTimeout(function() { readFiles1Button.click();; } , 300);
+        setTimeout(function() { location.reload(); } , 500);
       });
     });
 
@@ -183,17 +183,13 @@
         const id = HInput.value;
         const x = HInput2.value;
         const y = HInput3.value;
+        all=id+" "+x+"@"+y+"|";
         formContainer.innerHTML="";
         console.log("5");
         writeFile("5");
-        console.log(id);
-        setTimeout(function() { writeFile2(id); } , 300);
-        console.log(x);
-        setTimeout(function() { writeFile2(x); } , 500);
-        console.log(y);
-        setTimeout(function() { writeFile2(y); } , 700);
-        setTimeout(function() { readFiles1Button.click(); }, 900);
-        setTimeout(function() { location.reload(); } , 1000);
+        writeFile2(all);
+        setTimeout(function() { readFiles1Button.click();; } , 300);
+        setTimeout(function() { location.reload(); } , 500);
       });
     });
     writeFile6Button.addEventListener("click", () => {
@@ -230,8 +226,8 @@
         setTimeout(function() {  writeFile("6") } , 100);
         console.log(id);
         setTimeout(function() {  writeFile2(id); } , 200);
-        setTimeout(function() {   readFiles1Button.click(); } , 300);
-        setTimeout(function() { location.reload(true) } , 400);
+        setTimeout(function() {  readFiles1Button.click(); } , 300);
+        setTimeout(function() {  location.reload() } , 600);
       });
     });
 
@@ -328,27 +324,158 @@
         formContainer.innerHTML="";
         console.log("8");
         writeFile("8");
+        all=id+"/"+ km + "-"+ idd+" "+x+"@"+y+"|";
         console.log(id);
-        setTimeout(function() { writeFile2(id); } , 300);
-        console.log(km);
-        setTimeout(function() { writeFile2(km); } , 400);
-        console.log(idd);
-        setTimeout(function() { writeFile2(idd); } , 500);
-        console.log(x);
-        setTimeout(function() { writeFile2(x); } , 600);
-        console.log(y);
-        setTimeout(function() { writeFile2(y); } , 700);
-        setTimeout(function() { readFiles1Button.click(); }, 900);
-        setTimeout(function() { location.reload(); } , 1000);
+        writeFile2(all);
+        setTimeout(function() { readFiles1Button.click();; } , 300);
+        setTimeout(function() { location.reload(); } , 500);
+        // setTimeout(function() { writeFile2(id); } , 300);
+        // console.log(km);
+        // setTimeout(function() { writeFile2(km); } , 400);
+        // console.log(idd);
+        // setTimeout(function() { writeFile2(idd); } , 500);
+        // console.log(x);
+        // setTimeout(function() { writeFile2(x); } , 600);
+        // console.log(y);
+        // setTimeout(function() { writeFile2(y); } , 700);
+        // setTimeout(function() { readFiles1Button.click(); }, 900);
+        // setTimeout(function() { location.reload(); } , 1500);
       });
     });
 
     writeFile9Button.addEventListener("click", () => {
-      writeFile("9");
+
+      const formContainer = document.getElementById("orderForm");
+      const form = document.createElement("form");
+
+      const FLabel = document.createElement("label");
+      FLabel.textContent = "ID курьера:";
+      FLabel.setAttribute("for", "idd");
+
+      const HInput = document.createElement("input");
+      HInput.setAttribute("type", "text");
+      HInput.setAttribute("id", "iddd");
+      HInput.setAttribute("name", "idds");
+      HInput.setAttribute("required", true);
+      HInput.setAttribute("pattern", "[0-9]+");
+
+      const submitButton = document.createElement("button");
+      submitButton.setAttribute("type", "submit");
+      submitButton.textContent = "Подтвердить";
+
+      form.appendChild(FLabel);
+      form.appendChild(HInput);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(submitButton);
+
+      formContainer.appendChild(form);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        form.remove();
+        const id = HInput.value;
+        formContainer.innerHTML="";
+        setTimeout(function() {  writeFile("9") } , 100);
+        console.log(id);
+        setTimeout(function() {  writeFile2(id); } , 200);
+        setTimeout(function() {   readFiles1Button.click(); } , 300);
+        setTimeout(function() { location.reload() } , 400);
+      });
     });
 
     writeFile11Button.addEventListener("click", () => {
-      writeFile("11");
+      const formContainer = document.getElementById("orderForm");
+      const form = document.createElement("form");
+
+      const FLabel = document.createElement("label");
+      FLabel.textContent = "ID заказа:";
+      FLabel.setAttribute("for", "id");
+
+      const HInput = document.createElement("input");
+      HInput.setAttribute("type", "text");
+      HInput.setAttribute("id", "id");
+      HInput.setAttribute("name", "sk");
+      HInput.setAttribute("required", true);
+      HInput.setAttribute("pattern", "[0-9]+");
+
+      const FLabel5 = document.createElement("label");
+      FLabel5.textContent = "ID склада:";
+      FLabel5.setAttribute("for", "id");
+
+      const HInput5 = document.createElement("input");
+      HInput5.setAttribute("type", "text");
+      HInput5.setAttribute("id", "id");
+      HInput5.setAttribute("name", "sk");
+      HInput5.setAttribute("required", true);
+      HInput5.setAttribute("pattern", "[0-9]+");
+
+      const FLabel2 = document.createElement("label");
+      FLabel2.textContent = "X координата:";
+      FLabel2.setAttribute("for", "x");
+
+      const HInput2 = document.createElement("input");
+      HInput2.setAttribute("type", "text");
+      HInput2.setAttribute("id", "x");
+      HInput2.setAttribute("name", "xc");
+      HInput2.setAttribute("required", true);
+      HInput2.setAttribute("pattern", "[0-9]+");
+
+      const FLabel3 = document.createElement("label");
+      FLabel3.textContent = "Y координата:";
+      FLabel3.setAttribute("for", "y");
+
+      const HInput3 = document.createElement("input");
+      HInput3.setAttribute("type", "text");
+      HInput3.setAttribute("id", "y");
+      HInput3.setAttribute("name", "yc");
+      HInput3.setAttribute("required", true);
+      HInput3.setAttribute("pattern", "[0-9]+");
+
+      const submitButton = document.createElement("button");
+      submitButton.setAttribute("type", "submit");
+      submitButton.textContent = "Подтвердить";
+
+      form.appendChild(FLabel);
+      form.appendChild(HInput);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(FLabel5);
+      form.appendChild(HInput5);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(FLabel2);
+      form.appendChild(HInput2);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(FLabel3);
+      form.appendChild(HInput3);
+      form.appendChild(document.createElement("br"));
+      form.appendChild(submitButton);
+
+      formContainer.appendChild(form);
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        form.remove();
+        const id = HInput.value;
+        const x = HInput2.value;
+        const y = HInput3.value;
+        const idd = HInput5.value;
+        formContainer.innerHTML="";
+        console.log("11");
+        writeFile("11");
+        all=id+"/" + idd+" "+x+"@"+y+"|";
+        writeFile2(all);
+        setTimeout(function() { readFiles1Button.click();; } , 300);
+        setTimeout(function() { location.reload(); } , 500);
+        // console.log(id);
+        // setTimeout(function() { writeFile2(id); } , 200);
+        // console.log(idd);
+        // setTimeout(function() { writeFile2(idd); } , 300);
+        // console.log(x);
+        // setTimeout(function() { writeFile2(x); } , 400);
+        // console.log(y);
+        // setTimeout(function() { writeFile2(y); } , 500);
+        // setTimeout(function() { readFiles1Button.click(); }, 600);
+        // setTimeout(function() { location.reload(); } , 700);
+      });
     });
 
     readFilesButton.addEventListener("click", async () => {
@@ -391,9 +518,11 @@
 
         const responseText = await response.text();
         messageDiv.textContent = responseText;
+        return responseText;
       } catch (error) {
         console.error("Ошибка:", error);
         messageDiv.textContent = "Ошибка: " + error;
+        throw error
       }
     }
 
@@ -409,9 +538,11 @@
 
         const responseText2 = await response2.text();
         messageDiv.textContent = responseText2;
+        return responseText2;
       } catch (error) {
         console.error("Ошибка:", error);
         messageDiv.textContent = "Ошибка: " + error;
+        throw error;
       }
     }
 
