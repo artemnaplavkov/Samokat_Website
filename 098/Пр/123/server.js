@@ -25,7 +25,7 @@ app.post('/save/:filename', (req, res) => {
       console.error(err);
       return res.status(500).send('Ошибка при сохранении файла.');
     }
-    // res.send('Файл успешно сохранен!');
+    res.send('Файл успешно сохранен!');
   });
 });
 
@@ -38,7 +38,7 @@ app.post('/save2/:filename', (req, res) => {
       console.error(err);
       return res.status(500).send('Ошибка при сохранении файла.');
     }
-    // res.send('Файл успешно сохранен!');
+    res.send('Файл успешно сохранен!');
   });
 });
 
