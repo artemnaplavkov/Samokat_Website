@@ -1,53 +1,192 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Запись чисел в файл</title>
+  <title>Система управления складом</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
     #buttons-container {
       display: inline-block;
-      width: 200px;
+      width: 220px;
       vertical-align: top;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    #buttons-container button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 5px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #buttons-container button:hover {
+      background-color: #0056b3;
     }
 
     #mes {
       display: inline-block;
       white-space: pre-wrap;
-      width: 400px;
+      width: 500px;
       vertical-align: top;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+
     #orderForm {
       display: inline-block;
       white-space: pre-wrap;
       width: 400px;
       vertical-align: top;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+
+    #orderForm form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #orderForm label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    #orderForm input[type="text"] {
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    #orderForm button[type="submit"] {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #orderForm button[type="submit"]:hover {
+      background-color: #218838;
+    }
+
     .hide {
       display: none;
     }
+
     #show {
       display: inline-block;
     }
+
+    #message {
+      font-size: 14px;
+      color: #333;
+    }
+    .container {
+      display: flex;
+      justify-content: space-around; 
+      align-items: flex-start;
+    }
+
+    h1 {
+      text-align: center;
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+
+    #mes .collapsible {
+  margin-top: -100px;
+  margin-bottom: -100px;
+}
+
+#mes .toggle-button {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s;
+}
+
+#mes .toggle-button:hover {
+  background-color: #e0e0e0;
+}
+
+#mes .content {
+  padding: 10px;
+}
+
+#mes .collapsed .content {
+  display: none;
+}
   </style>
 </head>
 <body>
-  <div id="buttons-container">
-      <button id="writeFile1Button" class="hide">Сохранить</button></br>
-      <button id="writeFile2Button" class="hide">Прочитать</button></br>
-      <button id="writeFile3Button">Пропуск времени</button></br>
-      <button id="writeFile5Button">Добавить склад</button></br>
-      <button id="writeFile6Button">Удалить склад</button></br>
-      <button id="writeFile8Button">Добавить курьера</button></br>
-      <button id="writeFile9Button">Удалить курьера</button></br>
-      <button id="writeFile11Button">Добавить заказ</button></br>
-      <button id="readFileButton" class="hide">Прочитать файл</button></br>
-      <button id="readFile1Button" class="hide">Прочитать файл</button></br>
-      <button id="readFile2Button" class="hide">Прочитать файл</button></br>
-  </div>
-  <span id="mes"> 
-    <div id="message"></div>
-  </span>
-  <div id="orderForm"></div>
+  <h1>Система управления складом</h1>
 
+  <div class="container">
+    <div id="buttons-container">
+        <button id="writeFile1Button" class="hide">Сохранить</button>
+        <button id="writeFile2Button" class="hide">Прочитать</button>
+        <button id="writeFile3Button">Пропуск времени</button>
+        <button id="writeFile5Button">Добавить склад</button>
+        <button id="writeFile6Button">Удалить склад</button>
+        <button id="writeFile8Button">Добавить курьера</button>
+        <button id="writeFile9Button">Удалить курьера</button>
+        <button id="writeFile11Button">Добавить заказ</button>
+        <button id="readFileButton" class="hide">Прочитать файл</button>
+        <button id="readFile1Button" class="hide">Прочитать файл</button>
+        <button id="readFile2Button" class="hide">Прочитать файл</button>
+        
+    </div>
+<div id = "Map"><script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A842e7021a24d2bc068b390a1fe60daab617b315286d79eeeb5e0f6ef86a0d313&amp;width=810&amp;height=597&amp;lang=ru_RU&amp;scroll=true"></script></script></div>
+    <div id="mes">
+            <div class="file-data-container">
+                <div class="collapsible">
+                    <button type="button" class="toggle-button">Курьеры</button>
+                    <div id="courierData" class="content"></div>
+                </div>
+            </div>
+
+            <div class="file-data-container">
+                <div class="collapsible">
+                    <button type="button" class="toggle-button">Заказы</button>
+                    <div id="orderData" class="content"></div>
+                </div>
+            </div>
+
+            <div class="file-data-container">
+                <div class="collapsible">
+                    <button type="button" class="toggle-button">Склады</button>
+                    <div id="storageData" class="content"></div>
+                </div>
+            </div>
+        </div>
+
+    <div id="orderForm"></div>
+  </div>
   <script>
     const writeFile1Button = document.getElementById("writeFile1Button");
     const writeFile2Button = document.getElementById("writeFile2Button");
@@ -66,7 +205,7 @@
 
     const writeFilename = "text.txt";
     const writeFilename2 = "text2.txt";
-    const readFilenames = ["courier.txt", "order.txt", "storage.txt"];
+    const readFilenames = [ "storage.txt"];
 
     writeFile1Button.addEventListener("click", () => {
       writeFile("1");
@@ -87,6 +226,8 @@
     writeFile3Button.addEventListener("click", () => {
       const formContainer = document.getElementById("orderForm");
       const form = document.createElement("form");
+      
+      formContainer.innerHTML="";
 
       const FLabel = document.createElement("label");
       FLabel.textContent = "Количесто часов:";
@@ -116,7 +257,6 @@
         const hours = HInput.value;
         formContainer.innerHTML="";
         writeFile("3");
-        console.log(hours);
         writeFile2(hours);
         setTimeout(function() { readFiles1Button.click();; } , 300);
         setTimeout(function() { location.reload(); } , 500);
@@ -126,6 +266,8 @@
     writeFile5Button.addEventListener("click", () => {
       const formContainer = document.getElementById("orderForm");
       const form = document.createElement("form");
+
+      formContainer.innerHTML="";
 
       const FLabel = document.createElement("label");
       FLabel.textContent = "ID склада:";
@@ -196,6 +338,8 @@
       const formContainer = document.getElementById("orderForm");
       const form = document.createElement("form");
 
+      formContainer.innerHTML="";
+
       const FLabel = document.createElement("label");
       FLabel.textContent = "ID склада:";
       FLabel.setAttribute("for", "idd");
@@ -234,6 +378,8 @@
     writeFile8Button.addEventListener("click", () => {
       const formContainer = document.getElementById("orderForm");
       const form = document.createElement("form");
+
+      formContainer.innerHTML="";
 
       const FLabel = document.createElement("label");
       FLabel.textContent = "ID курьера:";
@@ -329,17 +475,6 @@
         writeFile2(all);
         setTimeout(function() { readFiles1Button.click();; } , 300);
         setTimeout(function() { location.reload(); } , 500);
-        // setTimeout(function() { writeFile2(id); } , 300);
-        // console.log(km);
-        // setTimeout(function() { writeFile2(km); } , 400);
-        // console.log(idd);
-        // setTimeout(function() { writeFile2(idd); } , 500);
-        // console.log(x);
-        // setTimeout(function() { writeFile2(x); } , 600);
-        // console.log(y);
-        // setTimeout(function() { writeFile2(y); } , 700);
-        // setTimeout(function() { readFiles1Button.click(); }, 900);
-        // setTimeout(function() { location.reload(); } , 1500);
       });
     });
 
@@ -347,6 +482,8 @@
 
       const formContainer = document.getElementById("orderForm");
       const form = document.createElement("form");
+
+      formContainer.innerHTML="";
 
       const FLabel = document.createElement("label");
       FLabel.textContent = "ID курьера:";
@@ -384,8 +521,11 @@
     });
 
     writeFile11Button.addEventListener("click", () => {
+      
       const formContainer = document.getElementById("orderForm");
       const form = document.createElement("form");
+
+      formContainer.innerHTML="";
 
       const FLabel = document.createElement("label");
       FLabel.textContent = "ID заказа:";
@@ -465,46 +605,31 @@
         writeFile2(all);
         setTimeout(function() { readFiles1Button.click();; } , 300);
         setTimeout(function() { location.reload(); } , 500);
-        // console.log(id);
-        // setTimeout(function() { writeFile2(id); } , 200);
-        // console.log(idd);
-        // setTimeout(function() { writeFile2(idd); } , 300);
-        // console.log(x);
-        // setTimeout(function() { writeFile2(x); } , 400);
-        // console.log(y);
-        // setTimeout(function() { writeFile2(y); } , 500);
-        // setTimeout(function() { readFiles1Button.click(); }, 600);
-        // setTimeout(function() { location.reload(); } , 700);
       });
     });
 
-    readFilesButton.addEventListener("click", async () => {
-      let allData = "";
+    const courierDataDiv = document.getElementById("courierData");
+const orderDataDiv = document.getElementById("orderData");
+const storageDataDiv = document.getElementById("storageData");
 
-      for (const filename of readFilenames) {
-        try {
-          const response = await fetch(`/load?filename=${filename}`);
-          if (response.ok) {
-            const data = await response.text();
-            if(filename == "courier.txt"){
-              allData += `Содержимое1 файла ${filename}:\n${data}\n\n`;
-            }
-            else if(filename == "order.txt"){
-              allData += `Содержимое2 файла ${filename}:\n${data}\n\n`;
-            }
-            else if(filename == "storage.txt"){
-              allData += `Содержимое3 файла ${filename}:\n${data}\n\n`;
-            }
-          } else {
-            allData += `Ошибка при чтении файла ${filename}: ${response.statusText}\n\n`;
-          }
-        } catch (error) {
-          allData += `Ошибка при чтении файла ${filename}: ${error}\n\n`;
-        }
-      }
+readFilesButton.addEventListener("click", async () => {
+  displayCourierData();
+  displayOrderData();
+  displayStorageData()
+});
+document.addEventListener('DOMContentLoaded', function() {
+  const collapsibles = document.querySelectorAll('.collapsible');
 
-      messageDiv.textContent = allData;
+  collapsibles.forEach(collapsible => {
+    const toggleButton = collapsible.querySelector('.toggle-button');
+    const content = collapsible.querySelector('.content');
+
+    toggleButton.addEventListener('click', function() {
+      collapsible.classList.toggle('collapsed');
     });
+    collapsible.classList.add('collapsed');
+  });
+});
 
     async function writeFile(data) {
       try {
@@ -550,8 +675,124 @@
       const myButton = document.getElementById("readFileButton");
       myButton.click(); 
       readFiles2Button.click();
+      writeFile11Button.click();
     };
     
+    async function displayCourierData() {
+      const response = await fetch('/load?filename=courier.txt');
+      if (response.ok) {
+        const data = await response.text();
+        const courierDataDiv = document.getElementById("courierData");
+
+        const lines = data.split('\n');
+        let formattedOutput = "";
+
+        for (const line of lines) {
+          if (line.trim() !== "") {
+            const values = line.split(' ');
+            if (values.length == 7) {
+              const courierId = values[0];
+              const courierSpeed = values[1];
+              const storageId = values[2];
+              const coordinateX = values[4];
+              const coordinateY = values[5];
+              const orderStatus = values[3];
+           
+              formattedOutput += `ID курьера = ${courierId}\n`;
+              formattedOutput += `Скорость курьера = ${courierSpeed}\n`;
+              formattedOutput += `ID склада = ${storageId}\n`;
+              formattedOutput += `Координата X = ${coordinateX}\n`;
+              formattedOutput += `Координата Y = ${coordinateY}\n`;
+              formattedOutput += `Статус заказа = ${orderStatus}\n`;
+              formattedOutput += "\n";
+            } else {
+              console.log(values.length);
+              formattedOutput += `Неверный формат строки: ${line}\n`;
+            }
+          }
+        }
+        const parentElement = document.getElementById('myContainer');
+
+      courierDataDiv.textContent = formattedOutput; 
+    } else {
+      const courierDataDiv = document.getElementById("courierData");
+      courierDataDiv.textContent = `Ошибка при чтении файла courier.txt: ${response.statusText}`;
+      }
+    }
+
+    async function displayOrderData() {
+      const response = await fetch('/load?filename=order.txt');
+      if (response.ok) {
+        const data = await response.text();
+        const courierDataDiv = document.getElementById("orderData");
+
+        const lines = data.split('\n');
+        let formattedOutput = "";
+
+        for (const line of lines) {
+          if (line.trim() !== "") { 
+            const values = line.split(' ');
+            if (values.length == 6) { 
+              const OrderId = values[0];
+              const storageId = values[1];
+              const Orderstatus = values[2];
+              const coordinateX = values[3];
+              const coordinateY = values[4];
+           
+              formattedOutput += `ID заказа = ${OrderId}\n`;
+              formattedOutput += `ID склада = ${storageId}\n`;
+              formattedOutput += `Координата X = ${coordinateX}\n`;
+              formattedOutput += `Координата Y = ${coordinateY}\n`;
+              formattedOutput += `Статус заказа = ${Orderstatus}\n`;
+              formattedOutput += "\n";
+            } else {
+              console.log(values.length);
+              formattedOutput += `Неверный формат строки: ${line}\n`;
+            }
+          }
+        }
+
+      courierDataDiv.textContent = formattedOutput;
+    } else {
+      const courierDataDiv = document.getElementById("orderData");
+      courierDataDiv.textContent = `Ошибка при чтении файла order.txt: ${response.statusText}`;
+      }
+    }
+
+    async function displayStorageData() {
+      const response = await fetch('/load?filename=storage.txt');
+      if (response.ok) {
+        const data = await response.text();
+        const courierDataDiv = document.getElementById("storageData");
+
+        const lines = data.split('\n');
+        let formattedOutput = "";
+
+        for (const line of lines) {
+          if (line.trim() !== "") {
+            const values = line.split(' '); 
+            if (values.length == 4) {
+              const storageId = values[0];
+              const coordinateX = values[1];
+              const coordinateY = values[2];
+
+              formattedOutput += `ID склада = ${storageId}\n`;
+              formattedOutput += `Координата X = ${coordinateX}\n`;
+              formattedOutput += `Координата Y = ${coordinateY}\n`;
+              formattedOutput += "\n";
+            } else {
+              console.log(values.length);
+              formattedOutput += `Неверный формат строки: ${line}\n`;
+            }
+          }
+        }
+
+      courierDataDiv.textContent = formattedOutput;
+    } else {
+      const courierDataDiv = document.getElementById("orderData");
+      courierDataDiv.textContent = `Ошибка при чтении файла order.txt: ${response.statusText}`;
+      }
+    }
   </script>
 
 </body>
