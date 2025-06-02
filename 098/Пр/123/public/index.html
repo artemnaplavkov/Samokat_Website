@@ -144,8 +144,17 @@
 #mes .collapsed .content {
   display: none;
 }
+#Coord {
+      background-color: rgba(255, 255, 255, 0.8); /* Полупрозрачный фон */
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Тень */
+      font-size: 14px;
+      color: #333;/
+    }
   </style>
 </head>
+<script src="https://api-maps.yandex.ru/2.0-stable/?apikey=2407be97-a8db-4c66-b788-2d36cd64fec7&load=package.full&lang=ru-RU" type="text/javascript"></script>
 <body>
   <h1>Система управления складом</h1>
 
@@ -164,7 +173,10 @@
         <button id="readFile2Button" class="hide">Прочитать файл</button>
         
     </div>
-<div id = "Map"><script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A842e7021a24d2bc068b390a1fe60daab617b315286d79eeeb5e0f6ef86a0d313&amp;width=810&amp;height=597&amp;lang=ru_RU&amp;scroll=true"></script></script></div>
+<div>
+  <div id="myMap" style="width: 700px; height: 700px;"></div>
+  <div id="Coord"></div> 
+</div>
     <div id="mes">
             <div class="file-data-container">
                 <div class="collapsible">
@@ -191,6 +203,26 @@
     <div id="orderForm"></div>
   </div>
   <script>
+    ymaps.ready(init);
+    var myMap = new ymaps.Map ('myMap', {
+        center: [56.326813, 44.006200],
+        zoom: 10
+    });
+function init() {
+    myMap.behaviors.enable('scrollZoom');
+    myMap.controls
+        .add('mapTools')
+        .add('typeSelector')
+        .add('zoomControl'); 
+    myMap.events.add('click', function (e) {
+            const coords = e.get('coords');
+            const latitude = ((coords[0]-56.220298)*(1/0.009)).toFixed(2);
+            const longitude = ((coords[1]-43.824590)*(1/0.016)).toFixed(2);
+            Coord.textContent = `Вы кликнули по координатам: X: ${longitude}, Y: ${latitude}`;
+            // 56.220298+0.009*coordinateY , 43.824590+0.016*coordinateX
+        });
+        
+}
     const writeFile1Button = document.getElementById("writeFile1Button");
     const writeFile2Button = document.getElementById("writeFile2Button");
     const writeFile3Button = document.getElementById("writeFile3Button");
@@ -205,10 +237,13 @@
     const messageDiv = document.getElementById("message")
     const message2Div = document.getElementById("message2");
     const message3Div = document.getElementById("message3");
+    const Coord=document.getElementById("Coord");
 
     const writeFilename = "text.txt";
     const writeFilename2 = "text2.txt";
     const readFilenames = [ "storage.txt"];
+
+              
 
     writeFile1Button.addEventListener("click", () => {
       writeFile("1");
@@ -292,7 +327,6 @@
       HInput2.setAttribute("id", "x");
       HInput2.setAttribute("name", "xc");
       HInput2.setAttribute("required", true);
-      HInput2.setAttribute("pattern", "[0-9]+");
 
       const FLabel3 = document.createElement("label");
       FLabel3.textContent = "Y координата:";
@@ -303,7 +337,6 @@
       HInput3.setAttribute("id", "y");
       HInput3.setAttribute("name", "yc");
       HInput3.setAttribute("required", true);
-      HInput3.setAttribute("pattern", "[0-9]+");
 
       const submitButton = document.createElement("button");
       submitButton.setAttribute("type", "submit");
@@ -426,7 +459,6 @@
       HInput2.setAttribute("id", "x");
       HInput2.setAttribute("name", "xc");
       HInput2.setAttribute("required", true);
-      HInput2.setAttribute("pattern", "[0-9]+");
 
       const FLabel3 = document.createElement("label");
       FLabel3.textContent = "Y координата:";
@@ -437,7 +469,6 @@
       HInput3.setAttribute("id", "y");
       HInput3.setAttribute("name", "yc");
       HInput3.setAttribute("required", true);
-      HInput3.setAttribute("pattern", "[0-9]+");
 
       const submitButton = document.createElement("button");
       submitButton.setAttribute("type", "submit");
@@ -561,7 +592,6 @@
       HInput2.setAttribute("id", "x");
       HInput2.setAttribute("name", "xc");
       HInput2.setAttribute("required", true);
-      HInput2.setAttribute("pattern", "[0-9]+");
 
       const FLabel3 = document.createElement("label");
       FLabel3.textContent = "Y координата:";
@@ -572,7 +602,6 @@
       HInput3.setAttribute("id", "y");
       HInput3.setAttribute("name", "yc");
       HInput3.setAttribute("required", true);
-      HInput3.setAttribute("pattern", "[0-9]+");
 
       const submitButton = document.createElement("button");
       submitButton.setAttribute("type", "submit");
@@ -708,6 +737,14 @@ document.addEventListener('DOMContentLoaded', function() {
               formattedOutput += `Координата Y = ${coordinateY}\n`;
               formattedOutput += `Статус заказа = ${orderStatus}\n`;
               formattedOutput += "\n";
+              var myPlacemark = new ymaps.Placemark([56.220298+0.009*coordinateY , 43.824590+0.016*coordinateX], {
+              hintContent: `Курьер №${courierId}`,
+                },{
+                iconLayout: 'default#image', // Указываем, что используем изображение
+                iconImageHref: 'png/cur.png',   // Путь к изображению (замените на свой путь)
+                iconImageSize: [32, 32],
+                iconImageOffset: [-16, -37]});
+              myMap.geoObjects.add(myPlacemark);
             } else {
               console.log(values.length);
               formattedOutput += `Неверный формат строки: ${line}\n`;
@@ -748,6 +785,16 @@ document.addEventListener('DOMContentLoaded', function() {
               formattedOutput += `Координата Y = ${coordinateY}\n`;
               formattedOutput += `Статус заказа = ${Orderstatus}\n`;
               formattedOutput += "\n";
+              if(Orderstatus!=2){
+                  var myPlacemark = new ymaps.Placemark([56.220298+0.009*coordinateY , 43.824590+0.016*coordinateX], {
+                  hintContent: `Заказ №${OrderId}`,
+                  },{
+                  iconLayout: 'default#image',
+                  iconImageHref: 'png/ord.webp',
+                  iconImageSize: [32, 32],
+                  iconImageOffset: [-16, -37]});
+                  myMap.geoObjects.add(myPlacemark);
+                }
             } else {
               console.log(values.length);
               formattedOutput += `Неверный формат строки: ${line}\n`;
@@ -783,6 +830,14 @@ document.addEventListener('DOMContentLoaded', function() {
               formattedOutput += `Координата X = ${coordinateX}\n`;
               formattedOutput += `Координата Y = ${coordinateY}\n`;
               formattedOutput += "\n";
+              var myPlacemark = new ymaps.Placemark([56.220298+0.009*coordinateY , 43.824590+0.016*coordinateX], {
+              hintContent: `Склад №${storageId}`,
+                },{
+                iconLayout: 'default#image',
+                iconImageHref: 'png/stor.png', 
+                iconImageSize: [32, 32],
+                iconImageOffset: [-16, -37]});
+              myMap.geoObjects.add(myPlacemark);
             } else {
               console.log(values.length);
               formattedOutput += `Неверный формат строки: ${line}\n`;
