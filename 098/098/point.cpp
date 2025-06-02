@@ -15,7 +15,7 @@ namespace abstracts {
 			{
 				if (std::getline(in, line)) {
 					std::string s2 = line.substr(line.find(' ') + 1, line.find('@'));
-					x = stoi(s2);
+					x = stod(s2);
 					in.close();
 					std::ofstream ofs;
 					stop2 = 1;
@@ -32,7 +32,7 @@ namespace abstracts {
 			{
 				if (std::getline(in, line)) {
 					std::string s2 = line.substr(line.find('@') + 1, line.find('|'));
-					y = stoi(s2);
+					y = stod(s2);
 					in.close();
 					std::ofstream ofs;
 					stop2 = 1;
